@@ -17,7 +17,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "converter = roman.cli:main"
+            "jet = jet.cli:main"
         ]
     },
     packages=find_packages("src"),
