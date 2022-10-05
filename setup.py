@@ -9,7 +9,7 @@ dev_dependencies = [
 
 setup(
     name="jet",
-    description="Github queuing system",
+    description="Github queuing system with other github functionalities",
     version="0.1",
     install_requires=dependencies,
     extras_require={
