@@ -6,10 +6,13 @@ import os
 load_dotenv()
 
 logger = structlog.getLogger(__name__)
-git_api = Github('key')
+git_api = Github(os.environ.get('GITHUB_ACCESS_TOKEN'))
 
+def list_repos():
+    print("hello", git_api.get_user().get_repos())
+    for repo in git_api.get_user().get_repos():
+        if repo :
+            print(repo.name)
+        print('hello')
 
-def list_repos(roman_number: str) -> int:
-    for repo in g.get_user().get_repos():
-        print(repo.name)
-
+list_repos()
