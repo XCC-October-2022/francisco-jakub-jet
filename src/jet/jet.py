@@ -51,9 +51,12 @@ def add_to_queue(commit: str, force: bool = False):
                 "Current branch contains untracked changed.", filepath=filepath
             )
     if flag:
-        #repo.stash(repo.default_signature, "Jet-Stashing: untracked changes.")
-        ...
+        repo.stash(repo.default_signature, "Jet-Stashing: untracked changes.")
+
+    repo.checkout(new_branch.branch_name)
+
+    repo.merge(repo.branches.get('origin-main').branch_name)
+    
+    repo.stash_pop()
         
-    Repository('.').checkout(new_branch.branch_name)
-    Repository('.').create
 
