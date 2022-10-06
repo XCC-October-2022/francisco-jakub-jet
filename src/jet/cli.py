@@ -16,6 +16,10 @@ def list_repos():
 def get_current_branch():
     print(jet.get_current_branch())
 
+@app.command()
+def queue():
+    jet.add_to_queue()
+
 
 def main():
     logging.basicConfig(level=logging.WARNING)
