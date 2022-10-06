@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-dependencies = ["typer>=0.6", "structlog>=22.1.0", "python-dotenv>=0.21", "PyGithub>=1.55"]
+dependencies = ["typer>=0.6", "structlog>=22.1.0", "python-dotenv>=0.21", "PyGithub>=1.55", "pygit2>=1.10"]
 dev_dependencies = [
     "pytest>=7.1",
     "flake8>=5",

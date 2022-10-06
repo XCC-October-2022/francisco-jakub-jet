@@ -7,13 +7,14 @@ app = Typer()
 logger = logging.Logger(__name__)
 
 @app.command()
-def list_repos(test: int):
-    print(jet.list_repos(test))
+def list_repos():
+    repos = jet.list_repos()
+    for repo in repos:
+        print(repo.name)
 
 @app.command()
-def test(test: int):
-    ...
-
+def get_current_branch():
+    print(jet.get_current_branch())
 
 
 def main():
