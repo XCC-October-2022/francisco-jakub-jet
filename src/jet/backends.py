@@ -26,37 +26,40 @@ class GitBackend:
             remote.fetch()
 
         self.repo.git.stash('push')
-        logger.info(
-            "Stashing uncommited changes on current branch", current_branch=original_branch_name
-        )
+        # logger.info(
+        #     "Stashing uncommited changes on current branch", current_branch=original_branch_name
+        # )
 
-        self.repo.git.checkout('main')
+        # self.repo.git.checkout('main')
 
-        self.repo.git.checkout('-b', jet_branch_name)
+        # self.repo.git.checkout('-b', jet_branch_name)
 
-        try:            
-            logger.info(
-                "Starting Merge", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
-            )
-            self.repo.git.merge(original_branch_name)
-            logger.info(
-                "Merge Done", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
-            )
-        except Exception:
-            logger(Exception)
+        # try:            
+        #     logger.info(
+        #         "Starting Merge", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
+        #     )
+        #     self.repo.git.merge(original_branch_name)
+        #     logger.info(
+        #         "Merge Done", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
+        #     )
+        # except Exception:
+        #     logger(Exception)
 
-        push_command= f'git push {jet_branch_name}'
-        subprocess.Popen(push_command.split())
+        # push_command= f'git push {jet_branch_name}'
+        # subprocess.Popen(push_command.split())
 
-        logger.info(
-            "Pushing branch", jet_branch_name=jet_branch_name
-        )
+        # logger.info(
+        #     "Pushing branch", jet_branch_name=jet_branch_name
+        # )
 
-        pull_request_command= f'git pull-request --fork never --target-branch main'
+        pull_request_command= f'git checkout -b {jet_branch_name} --track origin/main'
         subprocess.Popen(pull_request_command.split())
 
-        #self.repo.git.checkout(original_branch_name)
-        #self.repo.git.stash('pop')
+        pull_request_command= f'git pull-request --fork never --target-branch main --message message'
+        subprocess.Popen(pull_request_command.split())
+
+        # self.repo.git.checkout(original_branch_name)
+        # self.repo.git.stash('pop')
 
 
     def jet_branch_exists(self, new_branch_name: str) -> bool:
