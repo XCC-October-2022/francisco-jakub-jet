@@ -40,7 +40,7 @@ class GitBackend:
             logger.info(
                 "Starting Merge", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
             )
-            self.repo.merge_base(jet_branch_name, original_branch_name)
+            self.repo.Merge(original_branch_name)
             logger.info(
                 "Merge Done", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
             )
