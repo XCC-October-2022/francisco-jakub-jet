@@ -1,11 +1,9 @@
-from typing import List, Generator, Protocol
-from datetime import datetime
+from typing import Protocol
 from git import Repo, Head
+import subprocess
 import structlog
 
-
 logger = structlog.getLogger(__name__)
-
 
 class Backend(Protocol):
     def create_branch(self) -> str:
@@ -40,19 +38,25 @@ class GitBackend:
             logger.info(
                 "Starting Merge", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
             )
-            self.repo.Merge(original_branch_name)
+            self.repo.git.merge(original_branch_name)
             logger.info(
                 "Merge Done", jet_branch_name=jet_branch_name, original_branch_name=original_branch_name
             )
         except Exception:
             logger(Exception)
 
+        push_command= f'git push {jet_branch_name}'
+        subprocess.Popen(push_command.split())
+
         logger.info(
-            "Created and checkouted branch", jet_branch=jet_branch_name
+            "Pushing branch", jet_branch_name=jet_branch_name
         )
 
-        self.repo.git.checkout(original_branch_name)
-        self.repo.git.stash('pop')
+        pull_request_command= f'git pull-request --fork never --target-branch main'
+        subprocess.Popen(pull_request_command.split())
+
+        #self.repo.git.checkout(original_branch_name)
+        #self.repo.git.stash('pop')
 
 
     def jet_branch_exists(self, new_branch_name: str) -> bool:
