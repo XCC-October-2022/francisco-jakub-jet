@@ -67,10 +67,10 @@ class GitBackend:
                 "Creating pull request"
             )
             repo.create_pull(
-                title=f'Jet-MR {self.repo.active_branch.name}',
+                title=f'Jet-MR {jet_branch_name}',
                 body='Jet-bot created this MR :)',
                 head=jet_branch_name,
-                base='main' 
+                base='main',
             )
         except Exception as e:
             logger.exception(e)
