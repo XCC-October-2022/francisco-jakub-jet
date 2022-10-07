@@ -17,9 +17,12 @@ def get_current_branch():
     print(jet.get_current_branch())
 
 @app.command()
-def queue():
-    jet.add_to_queue()
+def queue(commit_message: str):
+    jet.add_to_queue(commit_message)
 
+@app.command()
+def test_branch():
+    jet.create_branch()
 
 def main():
     logging.basicConfig(level=logging.WARNING)
