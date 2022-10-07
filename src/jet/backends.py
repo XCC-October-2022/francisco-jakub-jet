@@ -1,9 +1,13 @@
 from typing import Protocol
 from git import Repo, Head
+from github import Github
+from dotenv import load_dotenv
 import subprocess
 import structlog
+import os
 
 logger = structlog.getLogger(__name__)
+git_api = Github(os.environ.get('GITHUB_ACCESS_TOKEN'))
 
 class Backend(Protocol):
     def create_branch(self) -> str:
@@ -19,6 +23,7 @@ class GitBackend:
         return self.repo.active_branch
 
     def create_branch(self) -> str:
+        repo_name = self.repo.remotes.origin.url.split('.git')[0].split(':')[1]
         original_branch_name = self.repo.active_branch.name
         jet_branch_name = f'jet-{self.repo.active_branch.name}-{self.repo.active_branch.commit}'
 
@@ -45,18 +50,33 @@ class GitBackend:
         except Exception:
             logger(Exception)
 
-        push_command= f'git push {jet_branch_name}'
-        subprocess.Popen(push_command.split())
-
+        push_command= f'git push origin {jet_branch_name}'
+        p = subprocess.Popen(push_command.split())
+        p.communicate()
         logger.info(
             "Pushing branch", jet_branch_name=jet_branch_name
         )
 
-        pull_request_command= f'git pull-request --fork never --target-branch main'
-        subprocess.Popen(pull_request_command.split())
+        try:
+            repo = git_api.get_repo(repo_name)
+        except Exception:
+            print(Exception)
 
-        #self.repo.git.checkout(original_branch_name)
-        #self.repo.git.stash('pop')
+        try:
+            logger.info(
+                "Creating pull request"
+            )
+            repo.create_pull(
+                title=f'Jet-MR {self.repo.active_branch.name}',
+                body='Jet-bot created this MR :)',
+                head=jet_branch_name,
+                base='main' 
+            )
+        except Exception as e:
+            logger.exception(e)
+
+        self.repo.git.checkout(original_branch_name)
+        self.repo.git.stash('pop')
 
 
     def jet_branch_exists(self, new_branch_name: str) -> bool:
