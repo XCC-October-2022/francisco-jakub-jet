@@ -8,13 +8,6 @@ load_dotenv()
 logger = structlog.getLogger(__name__)
 git_api = Github(os.environ.get('GITHUB_ACCESS_TOKEN'))
 
-def list_repos():
-    logger.info(
-        "Listing repositories for current git account",
-    )
-    return git_api.get_user().get_repos()
-
-
 def get_current_branch() -> str:
     logger.info(
         "Listing current branch for current git account",
@@ -32,7 +25,7 @@ def create_branch():
     git = GitBackend('.')
     # Check if jet-branch already exists 
     jet_branch_name = f'jet-{git.active_branch.name}-{git.active_branch.commit}'
-    commit = git.active_branch.commit
+
     if git.jet_branch_exists(jet_branch_name):
         logger.warning('Jet branch has already been created')
         return
