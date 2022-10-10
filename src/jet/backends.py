@@ -76,7 +76,7 @@ class GitBackend:
         try:
             self.repo.git.stash('pop')
         except Exception as e:
-            logger.exception(e)
+            logger.warning(e)
 
 
     def jet_branch_exists(self, new_branch_name: str) -> bool:
