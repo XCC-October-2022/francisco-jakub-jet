@@ -57,10 +57,7 @@ class GitBackend:
             "Pushing branch", jet_branch_name=jet_branch_name
         )
 
-        try:
-            repo = git_api.get_repo(repo_name)
-        except Exception:
-            print(Exception)
+        repo = git_api.get_repo(repo_name)
 
         try:
             logger.info(
