@@ -73,7 +73,10 @@ class GitBackend:
             logger.exception(e)
 
         self.repo.git.checkout(original_branch_name)
-        self.repo.git.stash('pop')
+        try:
+            self.repo.git.stash('pop')
+        except Exception as e:
+            logger.exception(e)
 
 
     def jet_branch_exists(self, new_branch_name: str) -> bool:
