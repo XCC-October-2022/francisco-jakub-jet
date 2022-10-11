@@ -1,7 +1,6 @@
 from typing import Protocol
 from git import Repo, Head
 from github import Github
-from dotenv import load_dotenv
 import subprocess
 import structlog
 import os
@@ -22,7 +21,7 @@ class GitBackend:
     def active_branch(self) -> Head:
         return self.repo.active_branch
 
-    def create_branch(self) -> str:
+    def create_jet_branch(self) -> str:
         repo_name = self.repo.remotes.origin.url.split('.git')[0].split(':')[1]
         original_branch_name = self.repo.active_branch.name
         jet_branch_name = f'jet-{self.repo.active_branch.name}-{self.repo.active_branch.commit}'
@@ -87,5 +86,20 @@ class GitBackend:
 
         return True
 
+    def check_conflicts(self) -> bool:
+        # This gets the dictionary discussed above 
+        unmerged_blobs = self.repo.index.unmerged_blobs()
+
+        # We're really interested in the stage each blob is associated with.
+        # So we'll iterate through all of the paths and the entries in each value
+        # list, but we won't do anything with most of the values.
+        for path in unmerged_blobs:
+            list_of_blobs = unmerged_blobs[path]
+            for (stage, blob) in list_of_blobs:
+                # Now we can check each stage to see whether there were any conflicts
+                if stage != 0:
+                    return True
+        
+
     def git_status(self):
-        self.repo.git.sta
+        self.repo.git.stat

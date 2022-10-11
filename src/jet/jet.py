@@ -30,4 +30,4 @@ def create_branch():
         logger.warning('Jet branch has already been created')
         return
     
-    return git.create_branch()
+    return git.create_jet_branch()
