@@ -21,8 +21,8 @@ def queue(commit_message: str):
     jet.add_to_queue(commit_message)
 
 @app.command()
-def test_branch():
-    jet.create_branch()
+def queue():
+    jet.queue()
 
 def main():
     logging.basicConfig(level=logging.WARNING)

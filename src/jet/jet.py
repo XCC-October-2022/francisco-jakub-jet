@@ -14,14 +14,8 @@ def get_current_branch() -> str:
     )
     git = GitBackend('.')
     return git.active_branch
-    
-def merge_with_origin_main():
-    ...
 
 def queue():
-    ...
-
-def create_branch():
     git = GitBackend('.')
     # Check if jet-branch already exists 
     jet_branch_name = f'jet-{git.active_branch.name}-{git.active_branch.commit}'
@@ -30,4 +24,4 @@ def create_branch():
         logger.warning('Jet branch has already been created')
         return
     
-    return git.create_jet_branch()
+    return git.queue()
