@@ -1,4 +1,5 @@
 from jet.backends import GitBackend
+from uuid import uuid4
 import pytest
 import tempfile
 from pathlib import Path
@@ -22,4 +23,27 @@ def git_setup():
 def test_get_active_branch(git_setup):
     branch_name = git_setup.active_branch.name
     print(branch_name)
+    assert branch_name == 'master'
+
+def test_queue_from_main_or_master(git_setup):
+    filename = str(git_setup.repo_path) + "/" + str(uuid4())
+    open(filename, "wb").close()
+    git_setup.repo.index.add([filename])
+    git_setup.repo.index.commit("follow up file")
+    git_setup.queue()
+
+def test_queue_from_a_branch(git_setup):
+    filename = str(git_setup.repo_path) + "/" + str(uuid4())
+    open(filename, "wb").close()
+    git_setup.repo.index.add([filename])
+    git_setup.repo.index.commit("follow up file")
+    git_setup.queue()
+
+def test_queue_with_conflicts(git_setup):
+    branch_name = git_setup.active_branch.name
+    print(branch_name)
+    assert branch_name == 'master'
+
+def test_is_main_or_master(git_setup):
+    branch_name = git_setup.is_main_or_master()
     assert branch_name == 'master'
